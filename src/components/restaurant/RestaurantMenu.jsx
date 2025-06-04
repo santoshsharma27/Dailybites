@@ -19,13 +19,13 @@ const RestaurantMenu = () => {
   if (!resInfo) return <p>No menu available.</p>;
 
   const { name, costForTwoMessage, avgRating } =
-    resInfo?.cards[2]?.card?.card?.info;
+    resInfo?.cards[2]?.card?.card?.info || {};
 
   // Extract categories from the API response
   const categories =
     resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
-      (c) =>
-        c.card?.["card"]?.["@type"] ===
+      (category) =>
+        category.card?.card?.["@type"] ===
         "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory",
     );
 

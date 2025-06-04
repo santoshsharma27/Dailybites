@@ -20,7 +20,7 @@ const SearchBar = ({
       <div className="flex w-full justify-center px-4 sm:w-auto sm:px-0">
         <input
           aria-label="Search restaurants"
-          className="w-full max-w-[90%] rounded-full border border-solid px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 sm:w-[350px]"
+          className="w-full max-w-[90%] rounded-full border border-solid px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-orange-400 sm:w-[350px]"
           type="text"
           placeholder="Search restaurants..."
           value={searchText}

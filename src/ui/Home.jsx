@@ -21,7 +21,7 @@ function Home() {
       ) : (
         <button
           onClick={() => {
-            navigate("/menu");
+            navigate("/restaurants");
           }}
           className="mt-10 inline-block rounded-full bg-orange-500 px-8 py-3 text-lg font-semibold uppercase text-white shadow-md transition duration-300 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
         >

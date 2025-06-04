@@ -3,55 +3,21 @@ import Shimmer from "./Shimmer";
 import SearchBar from "./SearchBar";
 import Restaurants from "./restaurant/Restaurants";
 import useOnline from "../hooks/useOnlineStatus";
-import { SWIGGY_API } from "../utils/constant";
+import useRestaurants from "../hooks/useRestaurants";
 
 const Menu = () => {
-  const [allRestaurants, setAllRestaurants] = useState([]);
+  const { restaurants: allRestaurants, loading, error } = useRestaurants();
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [error, setError] = useState(null);
-  const [searchError, setSearchError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
 
   const isOnline = useOnline();
 
-  // Fetch restaurant data from API
-  const fetchRestaurants = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch(SWIGGY_API);
-      if (!res.ok) throw new Error("Error fetching restaurants.");
-      const json = await res.json();
-      const restaurantData = extractRestaurants(json);
-      setAllRestaurants(restaurantData);
-      setFilteredRestaurants(restaurantData);
-    } catch (error) {
-      console.error("Fetch Error:", error);
-      setError("Failed to load restaurants. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Extract restaurants from deeply nested API response
-  const extractRestaurants = (json) => {
-    let cards = json?.data?.cards || [];
-    for (let card of cards) {
-      const restaurants =
-        card?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-      if (restaurants) return restaurants;
-    }
-    return [];
-  };
-
+  // Sync filtered list when original list is updated
   useEffect(() => {
-    fetchRestaurants();
-    window.scrollTo(0, 0);
-  }, []);
+    setFilteredRestaurants(allRestaurants);
+  }, [allRestaurants]);
 
-  // Handle search input and filter matching restaurants
   const handleSearch = (value) => {
     window.scrollTo(0, 0);
     const text = value.trim().toLowerCase();
@@ -75,7 +41,6 @@ const Menu = () => {
     );
   };
 
-  // Filter top-rated restaurants
   const filterTopRated = () => {
     window.scrollTo(0, 0);
     const topRatedRestaurants = allRestaurants.filter(
@@ -89,7 +54,6 @@ const Menu = () => {
     );
   };
 
-  // Show offline message if user is offline
   if (!isOnline) {
     return (
       <h1 className="m-10 p-10 text-center">
@@ -98,17 +62,8 @@ const Menu = () => {
     );
   }
 
-  if (error) {
-    return <p className="pt-10 text-center text-red-500">{error}</p>;
-  }
-
-  if (searchError) {
-    return <p className="pt-10 text-center text-red-500">{searchError}</p>;
-  }
-
   return (
     <div>
-      {/* Search & filter bar */}
       <SearchBar
         searchText={searchText}
         setSearchText={setSearchText}
@@ -120,6 +75,12 @@ const Menu = () => {
           setSearchError("");
         }}
       />
+
+      {error && <p className="pt-10 text-center text-red-500">{error}</p>}
+
+      {searchError && (
+        <p className="pt-10 text-center text-red-500">{searchError}</p>
+      )}
 
       {loading && !error ? (
         <Shimmer />

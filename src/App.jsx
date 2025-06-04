@@ -14,9 +14,6 @@ import Offers from "./components/Offers";
 import Help from "./components/Help";
 import Loader from "./ui/Loader";
 import Menu from "./components/Menu";
-// import Grocery from "./components/Grocery";
-// import About from "./components/About";
-
 const Grocery = lazy(() => import("./components/Grocery"));
 const About = lazy(() => import("./components/About"));
 
@@ -30,8 +27,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/menu",
+        path: "/restaurants",
         element: <Menu />,
+      },
+      {
+        path: "/restaurants/:resId",
+        element: <RestaurantMenu />,
       },
       {
         path: "/about",
@@ -57,10 +58,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      {
-        path: "/restaurants/:resId",
-        element: <RestaurantMenu />,
-      },
+
       {
         path: "/checkout",
         element: <Address />,
