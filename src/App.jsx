@@ -13,7 +13,7 @@ import LoginPage from "./components/LoginPage";
 import Offers from "./components/Offers";
 import Help from "./components/Help";
 import Loader from "./ui/Loader";
-import Menu from "./components/Menu";
+import Restaurants from "./components/restaurant/Restaurants";
 const Grocery = lazy(() => import("./components/Grocery"));
 const About = lazy(() => import("./components/About"));
 
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/restaurants",
-        element: <Menu />,
+        element: <Restaurants />,
       },
       {
         path: "/restaurants/:resId",
