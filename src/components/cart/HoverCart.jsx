@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { getTotalPrice } from "../utils/cartSlice";
+import { getTotalPrice } from "./cartSlice";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -20,8 +20,6 @@ function HoverCart({ setIsCartHovered }) {
       location.pathname === "/payment" ||
       location.pathname === "/cart" ||
       location.pathname === "/grocery" ||
-      location.pathname === "/login" ||
-      location.pathname === "/signup" ||
       location.pathname === "/contact"
     ) {
       setIsCartHovered(false); // Ensure cart is hidden on this route

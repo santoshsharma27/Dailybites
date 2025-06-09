@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import EmptyCart from "../ui/EmptyCart";
+import EmptyCart from "./EmptyCart";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "../utils/cartSlice";
-import ConfirmModal from "./ConfirmModal";
-import CartItems from "./CartItems";
+import ConfirmModal from "../ConfirmModal";
 import { Link } from "react-router-dom";
+import { clearCart } from "./cartSlice";
+import CartItems from "./CartItems";
 
 function Cart() {
   const dispatch = useDispatch();

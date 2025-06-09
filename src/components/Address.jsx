@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addUserName } from "../utils/userSlice";
+import { fetchAddress } from "./user/userSlice";
 
 const Address = () => {
-  const [userName, setUserName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [landmark, setLandmark] = useState("");
+  const [localAddress, setLocalAddress] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {
+    userName,
+    position,
+    status: addressStatus,
+    address,
+  } = useSelector((state) => state.user);
+
+  const isLoadingAddress = addressStatus === "loading";
 
   useEffect(() => {
     window.scrollTo({
@@ -21,10 +26,12 @@ const Address = () => {
     });
   }, []);
 
+  useEffect(() => {
+    setLocalAddress(address);
+  }, [address]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Simulate API call before navigating
     setTimeout(() => {
       navigate("/payment");
       resetForm();
@@ -32,23 +39,14 @@ const Address = () => {
   };
 
   const resetForm = () => {
-    setUserName("");
     setPhoneNumber("");
-    setAddress("");
-    setCity("");
-    setLandmark("");
-  };
-
-  const handleUserName = (e) => {
-    const value = e.target.value;
-    setUserName(value);
-    dispatch(addUserName(value));
+    setLocalAddress("");
   };
 
   return (
     <div className="mx-auto mt-12 max-w-lg rounded-lg p-8">
       <h2 className="mb-8 text-center text-3xl font-bold text-gray-800">
-        Place Your Order
+        Ready to order? Let&apos;s go!
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Name */}
@@ -62,9 +60,7 @@ const Address = () => {
           <input
             type="text"
             id="name"
-            value={userName}
-            onChange={handleUserName}
-            required
+            defaultValue={userName}
             placeholder="Enter your name"
             className="mt-1 block w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
           />
@@ -92,7 +88,7 @@ const Address = () => {
         </div>
 
         {/* Delivery Address */}
-        <div>
+        <div className="relative w-full max-w-xl">
           <label
             htmlFor="address"
             className="mb-1 block text-sm font-medium text-gray-700"
@@ -102,49 +98,26 @@ const Address = () => {
           <input
             type="text"
             id="address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            value={localAddress}
+            onChange={(e) => setLocalAddress(e.target.value)}
+            disabled={isLoadingAddress}
             required
             placeholder="Enter your delivery address"
-            className="mt-1 block w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            className="mt-1 block w-full rounded-lg border border-gray-300 p-3 pr-32 text-gray-900 shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
           />
-        </div>
 
-        {/* City Name */}
-        <div>
-          <label
-            htmlFor="city"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            City
-          </label>
-          <input
-            type="text"
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            required
-            placeholder="Enter your city name"
-            className="mt-1 block w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-          />
-        </div>
-
-        {/* Landmark */}
-        <div>
-          <label
-            htmlFor="landmark"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Landmark
-          </label>
-          <input
-            type="text"
-            id="landmark"
-            value={landmark}
-            onChange={(e) => setLandmark(e.target.value)}
-            placeholder="Enter a nearby landmark"
-            className="mt-1 block w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-          />
+          {!position.latitude && !position.longitude && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(fetchAddress());
+              }}
+              type="button"
+              className="absolute right-3 top-[35px] rounded-full bg-orange-500 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            >
+              Get Position
+            </button>
+          )}
         </div>
 
         {/* Submit Button */}

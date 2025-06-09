@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "../utils/cartSlice";
-import { getUsername } from "../utils/userSlice";
+import { clearCart } from "./cart/cartSlice";
+import { getUserName } from "./user/userSlice";
 
 const OrderSuccess = () => {
   const dispatch = useDispatch();
-  const userName = useSelector(getUsername);
+  const userName = useSelector(getUserName);
 
   // Generate a random order ID (e.g., a 6-digit number)
   const orderId = Math.floor(100000 + Math.random() * 900000);
@@ -32,14 +32,14 @@ const OrderSuccess = () => {
         Order Placed Successfully!
       </h2>
       <p className="mt-4 text-lg font-medium">
-        Thank you for your order {userName}
+        Thank you for your order, {userName}
       </p>
       <p className="mt-2">Your Order will be delivered to your address</p>
       <p className="mt-2">
         Expect your order to arrive in approximately 45 minutes.
       </p>
       <p className="mt-4 font-medium">
-        Order ID: <span className="text-blue-500">{orderId}</span>
+        Order ID: <span className="text-orange-500">{orderId}</span>
       </p>
       <p className="mt-4 text-sm text-gray-600">
         If you have any questions, feel free to contact us at 1800-800-800.
@@ -49,7 +49,7 @@ const OrderSuccess = () => {
       </p>
       <div className="mt-6">
         <Link
-          className="rounded bg-blue-500 px-4 py-3 font-semibold text-white hover:bg-blue-600"
+          className="rounded bg-orange-500 px-4 py-3 font-semibold text-white hover:bg-orange-600"
           to="/"
         >
           Go to Home

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import useRestaurantMenu from "../utils/useRestaurantMenu";
+import useRestaurantMenu from "../../hooks/useRestaurantMenu";
 import RestaurantCategory from "./RestaurantCateory";
-import Loader from "../ui/Loader";
+import Loader from "../../ui/Loader";
 
 const RestaurantMenu = () => {
   const [curOpen, setCurOpen] = useState(0);
@@ -19,29 +19,30 @@ const RestaurantMenu = () => {
   if (!resInfo) return <p>No menu available.</p>;
 
   const { name, costForTwoMessage, avgRating } =
-    resInfo?.cards[2]?.card?.card?.info;
+    resInfo?.cards[2]?.card?.card?.info || {};
 
   // Extract categories from the API response
   const categories =
     resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
-      (c) =>
-        c.card?.["card"]?.["@type"] ===
+      (category) =>
+        category.card?.card?.["@type"] ===
         "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory",
     );
 
   return (
     <div className="m-5 pt-24 text-center">
-      <h1 className="mb-2 text-2xl font-semibold md:text-xl lg:text-2xl">
-        {name}
-      </h1>
-      <p className="flex items-center justify-center text-sm font-semibold md:text-base">
-        <span className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-green-600 text-white">
-          <span className="text-sm">✭</span>
-        </span>
-        <span>{avgRating}</span>
-        <span className="px-2 text-gray-400">•</span>
-        <span>{costForTwoMessage}</span>
-      </p>
+      <div className="mx-auto max-w-xl rounded-xl border border-gray-300 bg-white p-4 shadow-sm">
+        <h1 className="mb-2 text-2xl font-bold text-gray-800">{name}</h1>
+        <div className="flex items-center justify-center text-sm font-medium text-gray-600">
+          <div className="mr-3 flex items-center space-x-1 rounded-full bg-green-600 px-2 py-1 text-white">
+            <span>✭</span>
+            <span>{avgRating}</span>
+          </div>
+          <span className="text-gray-400">•</span>
+          <span className="ml-2">{costForTwoMessage}</span>
+        </div>
+      </div>
+
       <div className="mt-4 space-y-4">
         {categories?.map((category, index) => (
           <RestaurantCategory

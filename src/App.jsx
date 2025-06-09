@@ -2,20 +2,18 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Contact from "./components/Contact";
 import Error from "./ui/Error";
-import Cart from "./components/Cart";
-import RestaurantMenu from "./components/RestaurantMenu";
+import Cart from "./components/cart/Cart";
+import RestaurantMenu from "./components/restaurant/RestaurantMenu";
 import Address from "./components/Address";
 import OrderSuccess from "./components/OrderSuccess";
 import PaymentPage from "./components/PaymentPage";
 import AppLayout from "./ui/AppLayout";
-import Home from "./components/Home";
+import Home from "./ui/Home";
 import LoginPage from "./components/LoginPage";
 import Offers from "./components/Offers";
 import Help from "./components/Help";
 import Loader from "./ui/Loader";
-// import Grocery from "./components/Grocery";
-// import About from "./components/About";
-
+import Restaurants from "./components/restaurant/Restaurants";
 const Grocery = lazy(() => import("./components/Grocery"));
 const About = lazy(() => import("./components/About"));
 
@@ -27,6 +25,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/restaurants",
+        element: <Restaurants />,
+      },
+      {
+        path: "/restaurants/:resId",
+        element: <RestaurantMenu />,
       },
       {
         path: "/about",
@@ -52,10 +58,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      {
-        path: "/restaurants/:resId",
-        element: <RestaurantMenu />,
-      },
+
       {
         path: "/checkout",
         element: <Address />,

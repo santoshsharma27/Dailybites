@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaCcVisa, FaCcMastercard, FaCcDiscover } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getTotalPrice } from "../utils/cartSlice";
+import { getTotalPrice } from "./cart/cartSlice";
 
 const PaymentPage = () => {
   const [formData, setFormData] = useState({

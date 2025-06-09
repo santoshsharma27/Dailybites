@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
 import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
-import ItemListWithToast from "./ItemListWithToast";
+import ItemListWithToast from "../ItemListWithToast";
 
 function RestaurantCategory({ menu, num, curOpen, onOpen }) {
   const isOpen = num === curOpen;

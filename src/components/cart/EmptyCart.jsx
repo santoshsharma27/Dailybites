@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom"; // Assuming you're using React Router
-import { FaShoppingCart } from "react-icons/fa"; // For adding a cart icon
+import { Link } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
 
 function EmptyCart() {
   return (
@@ -12,7 +12,7 @@ function EmptyCart() {
       </p>
       <Link
         to="/" // Update this path based on your app's routing
-        className="inline-block rounded-full bg-blue-500 px-6 py-3 font-semibold text-white transition-colors hover:bg-blue-600"
+        className="inline-block rounded-full bg-orange-500 px-6 py-3 font-semibold text-white transition-colors hover:bg-orange-600"
       >
         Go to Home Page
       </Link>

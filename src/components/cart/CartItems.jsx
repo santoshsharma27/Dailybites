@@ -4,7 +4,7 @@ import {
   decrementItemQuantity,
   deleteItem,
   getTotalPrice,
-} from "../utils/cartSlice";
+} from "./cartSlice";
 
 function CartItems() {
   const cartItems = useSelector((state) => state.cart.cart);

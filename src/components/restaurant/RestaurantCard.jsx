@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { CDN_URL } from "../utils/constant";
+import { CDN_URL } from "../../utils/constant";
 
 const RestaurantCard = ({ resData }) => {
   const { cloudinaryImageId, name, cuisines, avgRating, sla, locality } =
@@ -10,7 +10,7 @@ const RestaurantCard = ({ resData }) => {
       <img
         className="h-[200px] w-full rounded-xl object-cover sm:h-[180px] md:h-[200px]"
         src={CDN_URL + cloudinaryImageId}
-        alt="res-logo"
+        alt={name}
         loading="lazy"
       />
       <h3 className="pt-3 text-lg font-semibold text-gray-800">{name}</h3>

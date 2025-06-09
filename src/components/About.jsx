@@ -1,5 +1,5 @@
 import { Component } from "react";
-import UserClass from "./UserClass";
+import UserClass from "./user/UserClass";
 
 class About extends Component {
   constructor(props) {
@@ -15,8 +15,8 @@ class About extends Component {
     // console.log("Parent Render");
 
     return (
-      <div className="text-center px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 py-16 pt-32">
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-4">
+      <div className="px-4 py-16 pt-32 text-center sm:px-8 md:px-16 lg:px-24 xl:px-32">
+        <h1 className="mb-4 text-2xl font-semibold md:text-3xl lg:text-4xl">
           About Class Component
         </h1>
 

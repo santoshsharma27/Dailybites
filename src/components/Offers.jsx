@@ -25,7 +25,7 @@ const Offers = () => {
         </p>
         <Link
           to="/"
-          className="rounded bg-blue-600 px-6 py-4 font-semibold text-white transition duration-300 hover:bg-blue-500"
+          className="rounded bg-orange-600 px-6 py-4 font-semibold text-white transition duration-300 hover:bg-orange-500"
         >
           Browse Menu
         </Link>
