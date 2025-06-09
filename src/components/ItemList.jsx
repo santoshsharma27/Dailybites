@@ -44,6 +44,7 @@ function ItemList({ items, setNotification }) {
               className="mb-3 h-48 w-full rounded-md object-cover"
               src={CDN_URL + item?.card?.info?.imageId}
               alt={item?.card?.info?.name}
+              loading="lazy"
             />
             <div className="w-full text-left">
               <h3 className="text-lg font-semibold text-gray-800">

@@ -2,10 +2,12 @@
 import { useEffect } from "react";
 
 const SearchBar = ({
+  onLoading,
   searchText,
   setSearchText,
   onSearch,
   onFilterTopRated,
+  onFilterVegOnly,
   onReset,
 }) => {
   useEffect(() => {
@@ -29,14 +31,23 @@ const SearchBar = ({
       </div>
       <div className="flex space-x-4">
         <button
-          className="rounded-full bg-gray-100 px-6 py-3 font-semibold text-gray-800 transition-colors duration-300 ease-in-out hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          disabled={onLoading}
           onClick={onFilterTopRated}
+          className="rounded-full bg-gray-100 px-6 py-3 font-semibold text-gray-800 transition-colors duration-300 ease-in-out hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
         >
           Top Rated Restaurants
         </button>
         <button
-          className="rounded-full bg-gray-100 px-6 py-3 font-semibold text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          disabled={onLoading}
+          onClick={onFilterVegOnly}
+          className="btn rounded-full bg-green-600 px-6 py-3 text-white hover:bg-green-500"
+        >
+          Veg Only
+        </button>
+        <button
+          disabled={onLoading}
           onClick={onReset}
+          className="rounded-full bg-gray-100 px-6 py-3 font-semibold text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
         >
           Reset Filter
         </button>

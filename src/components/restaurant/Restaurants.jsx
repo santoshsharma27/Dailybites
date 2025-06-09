@@ -82,11 +82,20 @@ const Restaurants = () => {
     const topRatedRestaurants = allRestaurants.filter(
       (r) => r?.info?.avgRating > 4.5,
     );
-    console.log(topRatedRestaurants);
     setFilteredRestaurants(topRatedRestaurants);
-    setSearchText("");
     setSearchError(
       topRatedRestaurants.length === 0 ? "No top-rated restaurants found." : "",
+    );
+  };
+
+  // Filter veg restaurants
+  const filterVegOnly = () => {
+    window.scrollTo(0, 0);
+    const vegRestaurants = allRestaurants.filter((r) => r?.info?.veg === true);
+
+    setFilteredRestaurants(vegRestaurants);
+    setSearchError(
+      vegRestaurants.length === 0 ? "No veg-only restaurants found." : "",
     );
   };
 
@@ -111,10 +120,12 @@ const Restaurants = () => {
     <div>
       {/* Search & filter bar */}
       <SearchBar
+        onLoading={loading}
         searchText={searchText}
         setSearchText={setSearchText}
         onSearch={handleSearch}
         onFilterTopRated={filterTopRated}
+        onFilterVegOnly={filterVegOnly}
         onReset={() => {
           setFilteredRestaurants(allRestaurants);
           setSearchText("");
