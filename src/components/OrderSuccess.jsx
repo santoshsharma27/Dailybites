@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { clearCart } from "./cart/cartSlice";
-import { getUserName } from "./user/userSlice";
 
 const OrderSuccess = () => {
   const dispatch = useDispatch();
-  const userName = useSelector(getUserName);
 
   // Generate a random order ID (e.g., a 6-digit number)
   const orderId = Math.floor(100000 + Math.random() * 900000);
@@ -32,7 +30,7 @@ const OrderSuccess = () => {
         Order Placed Successfully!
       </h2>
       <p className="mt-4 text-lg font-medium">
-        Thank you for your order, {userName}
+        Thank you for your order, Santosh
       </p>
       <p className="mt-2">Your Order will be delivered to your address</p>
       <p className="mt-2">

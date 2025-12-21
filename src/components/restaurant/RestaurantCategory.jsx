@@ -10,21 +10,23 @@ function RestaurantCategory({ menu, num, curOpen, onOpen }) {
 
   return (
     <div className="mx-auto my-4 w-full rounded-lg md:w-8/12">
-      <div
-        className="flex cursor-pointer items-center justify-between rounded-lg p-2 transition duration-300"
+      <button
         onClick={handleClick}
+        className="flex w-full items-center justify-between rounded-xl px-4 py-4 text-left transition hover:bg-gray-50 focus:outline-none"
       >
-        <span className="pb-2 text-lg font-bold">
-          {menu.title} ({menu?.itemCards.length})
+        <span className="text-base font-semibold md:text-lg">
+          {menu.title}
+          <span className="ml-2 text-sm font-normal text-gray-500">
+            ({menu?.itemCards.length})
+          </span>
         </span>
-        <span className="text-gray-600">
-          {isOpen ? (
-            <HiChevronUp className="text-lg" />
-          ) : (
-            <HiChevronDown className="text-lg" />
-          )}
-        </span>
-      </div>
+
+        {isOpen ? (
+          <HiChevronUp className="text-xl text-gray-600" />
+        ) : (
+          <HiChevronDown className="text-xl text-gray-600" />
+        )}
+      </button>
 
       {isOpen && (
         <div className="mt-2 overflow-hidden transition-all duration-300 ease-in-out">

@@ -1,35 +1,32 @@
 const Shimmer = () => {
   return (
-    <div className="flex flex-wrap items-center justify-center pt-4">
-      {Array(20)
-        .fill("")
-        .map((_, index) => (
-          <div
-            key={index}
-            className="m-4 flex w-full max-w-[290px] animate-pulse flex-col rounded-lg sm:max-w-[300px] lg:max-w-[320px]"
-          >
-            {/* Image Placeholder */}
-            <div className="m-5 h-[180px] rounded-lg bg-gray-300 sm:h-[180px] md:h-[200px]"></div>
+    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {Array.from({ length: 12 }).map((_, index) => (
+        <div
+          key={index}
+          className="flex w-full animate-pulse flex-col overflow-hidden rounded-xl bg-white shadow-sm"
+        >
+          {/* Image Placeholder */}
+          <div className="aspect-[4/3] w-full bg-gray-300" />
 
-            {/* Text Placeholders */}
-            <div className="flex h-full flex-col p-4">
-              {/* Title Placeholder */}
-              <div className="mb-2 h-6 rounded-md bg-gray-300"></div>
+          {/* Content Placeholder */}
+          <div className="flex flex-1 flex-col px-4 py-3">
+            {/* Title */}
+            <div className="h-5 w-3/4 rounded-md bg-gray-300" />
 
-              {/* Rating Placeholder */}
-              <div className="mt-auto flex items-center justify-start text-sm">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-300"></span>
-                <div className="mx-2 h-5 w-12 rounded-md bg-gray-300"></div>
-                <h4 className="px-1 font-bold text-gray-300">•</h4>
-                <div className="h-5 w-24 rounded-md bg-gray-300"></div>
-              </div>
-
-              {/* Cuisines and Locality Placeholders */}
-              <div className="mb-2 mt-3 h-4 rounded-md bg-gray-300"></div>
-              <div className="mt-1 h-4 rounded-md bg-gray-300"></div>
+            {/* Rating + Time */}
+            <div className="mt-3 flex items-center gap-2">
+              <div className="h-5 w-5 rounded-full bg-gray-300" />
+              <div className="h-4 w-10 rounded-md bg-gray-300" />
+              <div className="h-4 w-16 rounded-md bg-gray-300" />
             </div>
+
+            {/* Cuisine */}
+            <div className="mt-3 h-4 w-full rounded-md bg-gray-300" />
+            <div className="mt-2 h-4 w-2/3 rounded-md bg-gray-300" />
           </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };

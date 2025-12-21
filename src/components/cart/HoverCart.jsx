@@ -19,7 +19,6 @@ function HoverCart({ setIsCartHovered }) {
       location.pathname === "/checkout" ||
       location.pathname === "/payment" ||
       location.pathname === "/cart" ||
-      location.pathname === "/grocery" ||
       location.pathname === "/contact"
     ) {
       setIsCartHovered(false); // Ensure cart is hidden on this route

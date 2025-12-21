@@ -1,70 +1,35 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { MENU_API } from "../utils/constant";
 
-// Simple in-memory cache
-const menuCache = new Map();
-
-const useRestaurantMenu = (resId, retryLimit = 3) => {
+const useRestaurantMenu = (resId) => {
   const [resInfo, setResInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchMenu = useCallback(
-    async (signal) => {
-      if (!resId) return;
+  const fetchMenu = async () => {
+    setLoading(true);
+    setError(null);
 
-      // If cached, use it
-      if (menuCache.has(resId)) {
-        setResInfo(menuCache.get(resId));
-        return;
+    try {
+      const res = await fetch(MENU_API + resId);
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch. Status: ${res.status}`);
       }
-
-      setLoading(true);
-      setError(null);
-
-      let attempts = 0;
-
-      const fetchWithRetry = async () => {
-        try {
-          const res = await fetch(MENU_API + resId, { signal });
-
-          if (!res.ok) {
-            throw new Error(`Failed to fetch. Status: ${res.status}`);
-          }
-
-          const json = await res.json();
-          const data = json?.data;
-
-          // Cache the result
-          menuCache.set(resId, data);
-          setResInfo(data);
-        } catch (err) {
-          if (err.name === "AbortError") return;
-
-          attempts++;
-          if (attempts < retryLimit) {
-            console.warn(`Retrying... attempt ${attempts + 1}`);
-            await fetchWithRetry();
-          } else {
-            console.error("Fetch failed after retries:", err);
-            setError(err.message);
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      await fetchWithRetry();
-    },
-    [resId, retryLimit],
-  );
+      const json = await res.json();
+      const data = json?.data;
+      setResInfo(data);
+    } catch (err) {
+      console.error("Failed to get Restaurant Data", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const controller = new AbortController();
-    fetchMenu(controller.signal);
-
-    return () => controller.abort();
-  }, [fetchMenu]);
+    fetchMenu();
+  }, [resId]);
 
   return { resInfo, loading, error };
 };

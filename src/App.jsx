@@ -1,92 +1,70 @@
-import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Contact from "./components/Contact";
-import Error from "./ui/Error";
-import Cart from "./components/cart/Cart";
-import RestaurantMenu from "./components/restaurant/RestaurantMenu";
-import Address from "./components/Address";
-import OrderSuccess from "./components/OrderSuccess";
-import PaymentPage from "./components/PaymentPage";
-import AppLayout from "./ui/AppLayout";
-import Home from "./ui/Home";
-import LoginPage from "./components/LoginPage";
-import Offers from "./components/Offers";
-import Help from "./components/Help";
-import Loader from "./ui/Loader";
+import { lazy, Suspense } from "react";
+import AppLayout from "./components/AppLayout";
+import Error from "./components/Error/Error";
 import Restaurants from "./components/restaurant/Restaurants";
-const Grocery = lazy(() => import("./components/Grocery"));
-const About = lazy(() => import("./components/About"));
+import Loader from "./components/Loader";
+const RestaurantMenu = lazy(
+  () => import("./components/restaurant/RestaurantMenu"),
+);
+const Cart = lazy(() => import("./components/cart/Cart"));
+const Address = lazy(() => import("./components/Address"));
+const PaymentPage = lazy(() => import("./components/PaymentPage"));
+const OrderSuccess = lazy(() => import("./components/OrderSuccess"));
+const Contact = lazy(() => import("./components/Contact"));
+const Help = lazy(() => import("./components/Help"));
+const SignIn = lazy(() => import("./components/SignIn"));
+
+const withSuspense = (Component) => (
+  <Suspense fallback={<Loader />}>
+    <Component />
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
-    errorElement: <Error />, // Error boundary for layout
+    errorElement: <Error />,
     children: [
       {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/restaurants",
+        index: true,
         element: <Restaurants />,
       },
       {
-        path: "/restaurants/:resId",
-        element: <RestaurantMenu />,
+        path: "restaurants/:resId",
+        element: withSuspense(RestaurantMenu),
       },
       {
-        path: "/about",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <About />
-          </Suspense>
-        ),
+        path: "cart",
+        element: withSuspense(Cart),
       },
       {
-        path: "/contact",
-        element: <Contact />,
+        path: "checkout",
+        element: withSuspense(Address),
       },
       {
-        path: "/cart",
-        element: <Cart />,
+        path: "payment",
+        element: withSuspense(PaymentPage),
       },
       {
-        path: "/grocery",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <Grocery />
-          </Suspense>
-        ),
-      },
-
-      {
-        path: "/checkout",
-        element: <Address />,
+        path: "order-success",
+        element: withSuspense(OrderSuccess),
       },
       {
-        path: "/payment",
-        element: <PaymentPage />,
-      },
-
-      {
-        path: "/order-success",
-        element: <OrderSuccess />,
+        path: "contact",
+        element: withSuspense(Contact),
       },
       {
-        path: "/login",
-        element: <LoginPage />,
+        path: "help",
+        element: withSuspense(Help),
       },
       {
-        path: "/signup",
-        element: <LoginPage />,
+        path: "signin",
+        element: withSuspense(() => <SignIn mode="signin" />),
       },
       {
-        path: "/offers",
-        element: <Offers />,
-      },
-      {
-        path: "/help",
-        element: <Help />,
+        path: "signup",
+        element: withSuspense(() => <SignIn mode="signup" />),
       },
     ],
   },

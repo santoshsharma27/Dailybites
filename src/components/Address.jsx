@@ -6,11 +6,10 @@ import { fetchAddress } from "./user/userSlice";
 const Address = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [localAddress, setLocalAddress] = useState("");
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const {
-    userName,
     position,
     status: addressStatus,
     address,
@@ -34,13 +33,9 @@ const Address = () => {
     e.preventDefault();
     setTimeout(() => {
       navigate("/payment");
-      resetForm();
+      setPhoneNumber("");
+      setLocalAddress("");
     }, 1000);
-  };
-
-  const resetForm = () => {
-    setPhoneNumber("");
-    setLocalAddress("");
   };
 
   return (
@@ -60,7 +55,6 @@ const Address = () => {
           <input
             type="text"
             id="name"
-            defaultValue={userName}
             placeholder="Enter your name"
             className="mt-1 block w-full rounded-lg border border-gray-300 p-3 text-gray-900 shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:ring-opacity-50"
           />

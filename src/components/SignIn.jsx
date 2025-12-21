@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const LoginPage = () => {
+const SigIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const LoginPage = () => {
   }, []);
 
   // Determine the current form mode based on URL
-  const isLogin = location.pathname === "/login";
+  const isSignin = location.pathname === "/signin";
 
   // Formik configurations for login and signup
   const formik = useFormik({
@@ -32,7 +32,7 @@ const LoginPage = () => {
       password: Yup.string()
         .min(8, "Password must be at least 8 characters")
         .required("Required"),
-      ...(isLogin
+      ...(isSignin
         ? {} // Skip confirmPassword validation for login
         : {
             confirmPassword: Yup.string()
@@ -48,7 +48,7 @@ const LoginPage = () => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         navigate("/"); // Redirect on success
       } catch (err) {
-        setError(`Invalid ${isLogin ? "login" : "signup"} attempt`);
+        setError(`Invalid ${isSignin ? "login" : "signup"} attempt`);
       } finally {
         setIsLoading(false);
       }
@@ -57,14 +57,14 @@ const LoginPage = () => {
 
   const handleToggleForm = () => {
     // Toggle between login and signup routes
-    navigate(isLogin ? "/signup" : "/login");
+    navigate(isSignin ? "/signup" : "/signin");
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
         <h2 className="mb-6 text-center text-2xl font-bold text-gray-700">
-          {isLogin ? "Login to Your Account" : "Create an Account"}
+          {isSignin ? "Sign to Your Account" : "Create an Account"}
         </h2>
 
         <form onSubmit={formik.handleSubmit}>
@@ -131,7 +131,7 @@ const LoginPage = () => {
           </div>
 
           {/* Confirm Password Input for Signup */}
-          {!isLogin && (
+          {!isSignin && (
             <div className="mb-6">
               <label
                 className="mb-2 block font-semibold text-gray-600"
@@ -172,10 +172,10 @@ const LoginPage = () => {
             disabled={isLoading}
           >
             {isLoading
-              ? isLogin
+              ? isSignin
                 ? "Logging in..."
                 : "Signing up..."
-              : isLogin
+              : isSignin
                 ? "Login"
                 : "Sign Up"}
           </button>
@@ -184,12 +184,12 @@ const LoginPage = () => {
         {/* Link to Toggle Between Login and Signup */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
-            {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
+            {isSignin ? "Don’t have an account?" : "Already have an account?"}{" "}
             <button
               className="text-blue-600 hover:underline"
               onClick={handleToggleForm}
             >
-              {isLogin ? "Sign up" : "Log in"}
+              {isSignin ? "Sign up" : "Log in"}
             </button>
           </p>
         </div>
@@ -198,4 +198,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SigIn;

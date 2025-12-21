@@ -23,7 +23,7 @@ const Error = () => {
           onClick={handleGoHome} // Navigate to the home page
           className="mt-6 rounded bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700"
         >
-          Go to Home
+          Go to Restaurants
         </button>
       </div>
     </div>
