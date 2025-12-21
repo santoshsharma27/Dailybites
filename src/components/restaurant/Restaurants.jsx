@@ -7,7 +7,7 @@ import RestaurantCard from "./RestaurantCard";
 import { Link } from "react-router-dom";
 
 const Restaurants = () => {
-  const [allRestaurants, setAllRestaurants] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [error, setError] = useState(null);
@@ -26,7 +26,7 @@ const Restaurants = () => {
       if (!res.ok) throw new Error("Error fetching restaurants.");
       const json = await res.json();
       const restaurantData = extractRestaurants(json);
-      setAllRestaurants(restaurantData);
+      setRestaurants(restaurantData);
       setFilteredRestaurants(restaurantData);
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -52,37 +52,37 @@ const Restaurants = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Handle search input and filter matching restaurants
-  const handleSearch = (value) => {
-    window.scrollTo(0, 0);
-    const text = value.trim().toLowerCase();
-    setSearchText(value);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!searchText.trim()) {
+        setFilteredRestaurants(restaurants);
+        setSearchError("");
+        return;
+      }
 
-    if (!text) {
-      setFilteredRestaurants(allRestaurants);
-      setSearchError("");
-      return;
-    }
+      const filtered = restaurants.filter((r) =>
+        r?.info?.name?.toLowerCase().includes(searchText.toLowerCase()),
+      );
 
-    const filtered = allRestaurants.filter((r) =>
-      r?.info?.name?.toLowerCase().includes(text),
-    );
+      setFilteredRestaurants(filtered);
+      setSearchError(
+        filtered.length === 0
+          ? "No restaurants found matching your search."
+          : "",
+      );
+    }, 300);
 
-    setFilteredRestaurants(filtered);
-    setSearchError(
-      filtered.length === 0
-        ? "Oops! It seems there are no restaurants matching that name. Discover something new instead!"
-        : "",
-    );
-  };
+    return () => clearTimeout(timer);
+  }, [searchText, restaurants]);
 
   // Filter top-rated restaurants
   const filterTopRated = () => {
     window.scrollTo(0, 0);
-    const topRatedRestaurants = allRestaurants.filter(
+    const topRatedRestaurants = restaurants.filter(
       (r) => r?.info?.avgRating > 4.5,
     );
     setFilteredRestaurants(topRatedRestaurants);
+    setSearchText("");
     setSearchError(
       topRatedRestaurants.length === 0 ? "No top-rated restaurants found." : "",
     );
@@ -91,9 +91,10 @@ const Restaurants = () => {
   // Filter veg restaurants
   const filterVegOnly = () => {
     window.scrollTo(0, 0);
-    const vegRestaurants = allRestaurants.filter((r) => r?.info?.veg === true);
+    const vegRestaurants = restaurants.filter((r) => r?.info?.veg);
 
     setFilteredRestaurants(vegRestaurants);
+    setSearchText("");
     setSearchError(
       vegRestaurants.length === 0 ? "No veg-only restaurants found." : "",
     );
@@ -123,31 +124,26 @@ const Restaurants = () => {
         onLoading={loading}
         searchText={searchText}
         setSearchText={setSearchText}
-        onSearch={handleSearch}
         onFilterTopRated={filterTopRated}
         onFilterVegOnly={filterVegOnly}
-        onReset={() => {
-          setFilteredRestaurants(allRestaurants);
-          setSearchText("");
-          setSearchError("");
-        }}
       />
 
       {loading && !error ? (
         <Shimmer />
       ) : (
-        <div className="flex flex-wrap items-center justify-center pt-6">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredRestaurants?.length > 0 ? (
             filteredRestaurants.map((restaurant) => (
               <Link
                 key={restaurant?.info.id}
                 to={`/restaurants/${restaurant?.info?.id}`}
+                className="flex justify-center"
               >
                 <RestaurantCard resData={restaurant?.info} />
               </Link>
             ))
           ) : (
-            <p className="pt-32 text-center text-red-500">
+            <p className="col-span-full pt-32 text-center text-red-500">
               No restaurants available at the moment.
             </p>
           )}

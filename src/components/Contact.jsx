@@ -18,10 +18,10 @@ const ContactUs = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -31,20 +31,24 @@ const ContactUs = () => {
     if (formData.name && formData.email && formData.message) {
       setSubmitted(true);
     }
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
   };
 
   return (
     <div className="mx-auto mt-12 max-w-2xl p-10">
-      <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
-        Contact Us
-      </h2>
-
       {submitted ? (
         <p className="text-center font-semibold text-green-600">
           Thank you for reaching out! We&apos;ll get back to you soon.
         </p>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
+          <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
+            Contact Us
+          </h2>
           <div>
             <label
               htmlFor="name"
@@ -108,16 +112,16 @@ const ContactUs = () => {
           >
             Send Message
           </button>
+
+          {/* Contact Information */}
+          <div className="mt-12 text-center">
+            <p className="font-semibold text-gray-700">Or reach us at:</p>
+            <p className="mt-2 text-gray-600">Bangalore, Karnataka, 560076</p>
+            <p className="mt-1 text-gray-600">Phone: +91 7003189753</p>
+            <p className="mt-1 text-gray-600">Email: santosh37kr@gmail.com</p>
+          </div>
         </form>
       )}
-
-      {/* Contact Information */}
-      <div className="mt-12 text-center">
-        <p className="font-semibold text-gray-700">Or reach us at:</p>
-        <p className="mt-2 text-gray-600">Bangalore, Karnataka, 560076</p>
-        <p className="mt-1 text-gray-600">Phone: +91 7003189753</p>
-        <p className="mt-1 text-gray-600">Email: santosh37kr@gmail.com</p>
-      </div>
     </div>
   );
 };

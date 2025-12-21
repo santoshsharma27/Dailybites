@@ -15,7 +15,6 @@ const Header = () => {
 
   const isOnline = useOnline();
   const cartCount = useSelector(getCartCount);
-  const userName = useSelector((state) => state.user.userName);
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
@@ -32,10 +31,10 @@ const Header = () => {
     <header className="fixed z-50 flex h-16 w-full items-center justify-between bg-white px-4 font-bold text-black shadow-md sm:justify-evenly md:px-10">
       <Link
         to="/"
-        className="xs:text-xl whitespace-nowrap text-lg font-bold tracking-widest sm:text-2xl md:text-3xl"
+        className="xs:text-xl whitespace-nowrap text-lg font-bold tracking-widest text-orange-400 sm:text-2xl md:text-3xl"
         aria-label="Home"
       >
-        Fast Food Co.
+        Dailybites
       </Link>
 
       {/* Mobile navigation (visible on small screens only) */}
@@ -66,10 +65,8 @@ const Header = () => {
           <p className="flex items-center">{isOnline ? "🟢" : "🔴"}</p>
           <NavItem to="/">Home</NavItem>
           <NavItem to="/contact">Contact Us</NavItem>
-          <NavItem to="/grocery">Grocery</NavItem>
-          <NavItem to="/offers">Offers</NavItem>
           <NavItem to="/help">Help</NavItem>
-          <span className="uppercase">{userName}</span>
+          <NavItem to="/signin">Sign In</NavItem>
         </div>
 
         {/* Cart icon with hover dropdown (only on desktop) */}
@@ -117,16 +114,12 @@ const Header = () => {
             <NavItem to="/contact" onClick={toggleMenu}>
               Contact Us
             </NavItem>
-            <NavItem to="/grocery" onClick={toggleMenu}>
-              Grocery
-            </NavItem>
-            <NavItem to="/offers" onClick={toggleMenu}>
-              Offers
-            </NavItem>
             <NavItem to="/help" onClick={toggleMenu}>
               Help
             </NavItem>
-            <span className="uppercase">{userName}</span>
+            <NavItem to="/signin" onClick={toggleMenu}>
+              Sign In
+            </NavItem>
           </ul>
         </div>
       )}

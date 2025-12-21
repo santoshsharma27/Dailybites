@@ -6,29 +6,38 @@ const RestaurantCard = ({ resData }) => {
     resData;
 
   return (
-    <div className="m-4 flex w-full max-w-[300px] transform flex-col rounded-lg p-4 transition-all duration-300 ease-in-out hover:scale-105 sm:max-w-[300px] lg:max-w-[320px]">
-      <img
-        className="h-[200px] w-full rounded-xl object-cover sm:h-[180px] md:h-[200px]"
-        src={CDN_URL + cloudinaryImageId}
-        alt={name}
-        loading="lazy"
-      />
-      <h3 className="pt-3 text-lg font-semibold text-gray-800">{name}</h3>
-
-      <div className="mt-auto flex items-center justify-start text-sm">
-        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-white">
-          <span>✭</span>
-        </span>
-
-        <span className="px-1 py-1">{avgRating}</span>
-        <h4 className="px-1 font-bold text-gray-600">•</h4>
-        <h4 className="px-1 font-bold text-gray-600">{sla?.slaString}</h4>
+    <div className="group flex w-full flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:w-[280px] md:w-[300px] lg:w-[320px]">
+      {/* Image */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden">
+        <img
+          src={CDN_URL + cloudinaryImageId}
+          alt={name}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
       </div>
-      <div>
-        <h4 className="truncate text-sm text-gray-500">
-          {cuisines.join(", ")}
-        </h4>
-        <h4 className="truncate text-sm text-gray-500">{locality}</h4>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col px-4 py-3">
+        <h3 className="line-clamp-1 text-base font-semibold text-gray-800 md:text-lg">
+          {name}
+        </h3>
+
+        {/* Rating & Time */}
+        <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-xs text-white">
+            ★
+          </span>
+          <span className="font-medium">{avgRating}</span>
+          <span className="text-gray-400">•</span>
+          <span className="font-medium">{sla?.slaString}</span>
+        </div>
+
+        {/* Cuisine & Locality */}
+        <div className="mt-2 text-sm text-gray-500">
+          <p className="line-clamp-1">{cuisines.join(", ")}</p>
+          <p className="line-clamp-1">{locality}</p>
+        </div>
       </div>
     </div>
   );

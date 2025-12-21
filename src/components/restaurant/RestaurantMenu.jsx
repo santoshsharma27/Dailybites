@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../../hooks/useRestaurantMenu";
-import RestaurantCategory from "./RestaurantCateory";
-import Loader from "../../ui/Loader";
+import RestaurantCategory from "./RestaurantCategory";
+import Loader from "../../components/Loader";
 
 const RestaurantMenu = () => {
   const [curOpen, setCurOpen] = useState(0);
@@ -36,10 +36,10 @@ const RestaurantMenu = () => {
         <div className="flex items-center justify-center text-sm font-medium text-gray-600">
           <div className="mr-3 flex items-center space-x-1 rounded-full bg-green-600 px-2 py-1 text-white">
             <span>✭</span>
-            <span>{avgRating}</span>
           </div>
-          <span className="text-gray-400">•</span>
-          <span className="ml-2">{costForTwoMessage}</span>
+          <span>{avgRating}</span>
+          <span className="p-2 text-gray-400">•</span>
+          <span>{costForTwoMessage}</span>
         </div>
       </div>
 
