@@ -4,21 +4,15 @@ import AppLayout from "./components/AppLayout";
 import Error from "./components/Error/Error";
 import Restaurants from "./components/restaurant/Restaurants";
 import Loader from "./components/Loader";
+import Cart from "./components/cart/Cart";
+import Address from "./components/Address";
+import OrderSuccess from "./components/OrderSuccess";
+import Contact from "./components/Contact";
+import Help from "./components/Help";
+import SignIn from "./components/SignIn";
+const PaymentPage = lazy(() => import("./components/PaymentPage"));
 const RestaurantMenu = lazy(
   () => import("./components/restaurant/RestaurantMenu"),
-);
-const Cart = lazy(() => import("./components/cart/Cart"));
-const Address = lazy(() => import("./components/Address"));
-const PaymentPage = lazy(() => import("./components/PaymentPage"));
-const OrderSuccess = lazy(() => import("./components/OrderSuccess"));
-const Contact = lazy(() => import("./components/Contact"));
-const Help = lazy(() => import("./components/Help"));
-const SignIn = lazy(() => import("./components/SignIn"));
-
-const withSuspense = (Component) => (
-  <Suspense fallback={<Loader />}>
-    <Component />
-  </Suspense>
 );
 
 const router = createBrowserRouter([
@@ -32,39 +26,47 @@ const router = createBrowserRouter([
       },
       {
         path: "restaurants/:resId",
-        element: withSuspense(RestaurantMenu),
+        element: (
+          <Suspense fallback={<Loader />}>
+            <RestaurantMenu />
+          </Suspense>
+        ),
       },
       {
         path: "cart",
-        element: withSuspense(Cart),
+        element: <Cart />,
       },
       {
         path: "checkout",
-        element: withSuspense(Address),
+        element: <Address />,
       },
       {
         path: "payment",
-        element: withSuspense(PaymentPage),
+        element: (
+          <Suspense fallback={<Loader />}>
+            <PaymentPage />
+          </Suspense>
+        ),
       },
       {
         path: "order-success",
-        element: withSuspense(OrderSuccess),
+        element: <OrderSuccess />,
       },
       {
         path: "contact",
-        element: withSuspense(Contact),
+        element: <Contact />,
       },
       {
         path: "help",
-        element: withSuspense(Help),
+        element: <Help />,
       },
       {
         path: "signin",
-        element: withSuspense(() => <SignIn mode="signin" />),
+        element: <SignIn mode="signin" />,
       },
       {
         path: "signup",
-        element: withSuspense(() => <SignIn mode="signup" />),
+        element: <SignIn mode="signup" />,
       },
     ],
   },

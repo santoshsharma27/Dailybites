@@ -29,21 +29,13 @@ const OrderSuccess = () => {
       <h2 className="text-3xl font-bold text-green-600">
         Order Placed Successfully!
       </h2>
-      <p className="mt-4 text-lg font-medium">
-        Thank you for your order, Santosh
-      </p>
+      <p className="mt-4 text-lg font-medium">Thank you for your order</p>
       <p className="mt-2">Your Order will be delivered to your address</p>
       <p className="mt-2">
-        Expect your order to arrive in approximately 45 minutes.
+        Expect your order to arrive in approximately 30 minutes.
       </p>
       <p className="mt-4 font-medium">
         Order ID: <span className="text-orange-500">{orderId}</span>
-      </p>
-      <p className="mt-4 text-sm text-gray-600">
-        If you have any questions, feel free to contact us at 1800-800-800.
-      </p>
-      <p className="mt-4 text-sm text-gray-500">
-        You can also track your order status in the app.
       </p>
       <div className="mt-6">
         <Link

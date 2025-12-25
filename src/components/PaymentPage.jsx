@@ -13,7 +13,6 @@ const PaymentPage = () => {
   });
 
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
   const totalPrice = useSelector(getTotalPrice);
 
@@ -66,7 +65,7 @@ const PaymentPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 px-5 py-16">
-      <div className="mx-auto max-w-2xl rounded-lg bg-white p-8 shadow-lg">
+      <div className="mx-auto max-w-2xl rounded-lg p-8">
         <h2 className="mb-6 text-center text-3xl font-bold">
           Payment Information
         </h2>
@@ -91,12 +90,14 @@ const PaymentPage = () => {
               Card Number
             </label>
             <input
-              type="text"
+              type="tel"
+              inputMode="numeric"
+              pattern="[0-9 ]*"
               name="cardNumber"
               id="cardNumber"
               value={formData.cardNumber}
               onChange={handleChange}
-              maxLength="19" // For 16 digits + 3 spaces
+              maxLength="19"
               required
               className="w-full rounded border border-gray-300 p-3 focus:outline-none"
               placeholder="1234 5678 9012 3456"
@@ -129,12 +130,14 @@ const PaymentPage = () => {
                 Expiry Date (MM/YY)
               </label>
               <input
-                type="text"
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9/]*"
                 name="expiryDate"
                 id="expiryDate"
                 value={formData.expiryDate}
                 onChange={handleChange}
-                maxLength="5" // For MM/YY
+                maxLength="5"
                 required
                 className="w-full rounded border border-gray-300 p-3 focus:outline-none"
                 placeholder="MM/YY"
@@ -148,7 +151,9 @@ const PaymentPage = () => {
                 CVV
               </label>
               <input
-                type="text"
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 name="cvv"
                 id="cvv"
                 value={formData.cvv}

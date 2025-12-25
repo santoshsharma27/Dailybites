@@ -10,97 +10,85 @@ const Restaurants = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [isTopRated, setIsTopRated] = useState(false);
+  const [isVegOnly, setIsVegOnly] = useState(false);
   const [error, setError] = useState(null);
-  const [searchError, setSearchError] = useState(null);
+  const [searchError, setSearchError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const isOnline = useOnline();
 
-  // Fetch restaurant data from API
+  // Fetch restaurants
   const fetchRestaurants = async () => {
     setLoading(true);
     setError(null);
 
     try {
       const res = await fetch(SWIGGY_API);
-      if (!res.ok) throw new Error("Error fetching restaurants.");
+      if (!res.ok) throw new Error("Failed to fetch restaurants");
       const json = await res.json();
-      const restaurantData = extractRestaurants(json);
-      setRestaurants(restaurantData);
-      setFilteredRestaurants(restaurantData);
-    } catch (error) {
-      console.error("Fetch Error:", error);
+      const data = extractRestaurants(json);
+
+      setRestaurants(data);
+      setFilteredRestaurants(data);
+    } catch (err) {
+      console.error(err);
       setError("Failed to load restaurants. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Extract restaurants from deeply nested API response
+  // Extract restaurant list from Swiggy API
   const extractRestaurants = (json) => {
-    let cards = json?.data?.cards || [];
-    for (let card of cards) {
-      const restaurants =
-        card?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-      if (restaurants) return restaurants;
+    const cards = json?.data?.cards || [];
+    for (const card of cards) {
+      const list = card?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+      if (list) return list;
     }
     return [];
   };
 
+  // Initial fetch
   useEffect(() => {
     fetchRestaurants();
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!searchText.trim()) {
-        setFilteredRestaurants(restaurants);
-        setSearchError("");
-        return;
-      }
+    let data = [...restaurants];
 
-      const filtered = restaurants.filter((r) =>
+    if (isTopRated) {
+      data = data.filter((r) => r?.info?.avgRating > 4.5);
+    }
+
+    if (isVegOnly) {
+      data = data.filter((r) => r?.info?.veg);
+    }
+
+    if (searchText.trim()) {
+      data = data.filter((r) =>
         r?.info?.name?.toLowerCase().includes(searchText.toLowerCase()),
       );
+    }
 
-      setFilteredRestaurants(filtered);
-      setSearchError(
-        filtered.length === 0
-          ? "No restaurants found matching your search."
-          : "",
-      );
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchText, restaurants]);
-
-  // Filter top-rated restaurants
-  const filterTopRated = () => {
-    window.scrollTo(0, 0);
-    const topRatedRestaurants = restaurants.filter(
-      (r) => r?.info?.avgRating > 4.5,
-    );
-    setFilteredRestaurants(topRatedRestaurants);
-    setSearchText("");
+    setFilteredRestaurants(data);
     setSearchError(
-      topRatedRestaurants.length === 0 ? "No top-rated restaurants found." : "",
+      data.length === 0 ? "No restaurants found matching your filters." : "",
     );
+  }, [restaurants, searchText, isTopRated, isVegOnly]);
+
+  // oggle handlers (STATE ONLY)
+  const handleTopRatedToggle = (enabled) => {
+    setIsTopRated(enabled);
+    window.scrollTo(0, 0);
   };
 
-  // Filter veg restaurants
-  const filterVegOnly = () => {
+  const handleVegOnlyToggle = (enabled) => {
+    setIsVegOnly(enabled);
     window.scrollTo(0, 0);
-    const vegRestaurants = restaurants.filter((r) => r?.info?.veg);
-
-    setFilteredRestaurants(vegRestaurants);
-    setSearchText("");
-    setSearchError(
-      vegRestaurants.length === 0 ? "No veg-only restaurants found." : "",
-    );
   };
 
-  // Show offline message if user is offline
+  // Offline state
   if (!isOnline) {
     return (
       <h1 className="m-10 p-10 text-center">
@@ -113,29 +101,28 @@ const Restaurants = () => {
     return <p className="pt-32 text-center text-red-500">{error}</p>;
   }
 
-  if (searchError) {
-    return <p className="pt-32 text-center text-red-500">{searchError}</p>;
-  }
-
   return (
     <div>
-      {/* Search & filter bar */}
+      {/* Search + Filters */}
       <SearchBar
         onLoading={loading}
         searchText={searchText}
         setSearchText={setSearchText}
-        onFilterTopRated={filterTopRated}
-        onFilterVegOnly={filterVegOnly}
+        isTopRated={isTopRated}
+        isVegOnly={isVegOnly}
+        onFilterTopRated={handleTopRatedToggle}
+        onFilterVegOnly={handleVegOnlyToggle}
       />
 
-      {loading && !error ? (
+      {/* Content */}
+      {loading ? (
         <Shimmer />
       ) : (
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filteredRestaurants?.length > 0 ? (
+          {filteredRestaurants.length > 0 ? (
             filteredRestaurants.map((restaurant) => (
               <Link
-                key={restaurant?.info.id}
+                key={restaurant?.info?.id}
                 to={`/restaurants/${restaurant?.info?.id}`}
                 className="flex justify-center"
               >
@@ -144,7 +131,7 @@ const Restaurants = () => {
             ))
           ) : (
             <p className="col-span-full pt-32 text-center text-red-500">
-              No restaurants available at the moment.
+              {searchError}
             </p>
           )}
         </div>
